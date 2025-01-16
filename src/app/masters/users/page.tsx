@@ -1,8 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
 import CardsComponent from "../../components/cards/CardsComponent";
-import TableComponent from "../../components/cards/TableComponent";
-import { User } from "@prisma/client";
+import TableComponent from "../../components/table/TableComponent";
 import { buttonStyle, tableConfig } from "../../data/constants";
 
 const APIConf = {
