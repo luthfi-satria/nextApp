@@ -21,26 +21,30 @@ export default function TableFilterComponent({
 
     const buildSearchForm = () => {
         const search:any = [];
+        const excludeForm:Array<string> = ['page','limit'];
         if(filterProps.enableFilter){
             const fields = filterProps.filterField;
             fields?.forEach((items) => {
-                console.log({
-                    obj: filterProps.filterObject,
-                    items: items,
-                });
-                search.push(
-                    <div className="py-2 px-5" key={`searchForm_${items}`}>
-                        <label className={inputStyle.label}>{items}</label>
-                        <input 
-                            type="text" 
-                            name={items} 
-                            className={inputStyle.text} 
-                            placeholder={`Search ${items}`}
-                            defaultValue={''}
-                            onChange={filterProps.inputEvent}
-                        />
-                    </div>
-                );
+                // console.log({
+                //     obj: filterProps.filterObject,
+                //     items: items,
+                // });
+                if(!excludeForm.includes(items)){
+                    const defaultValue = (filterProps.filterObject && (items in filterProps.filterObject)) ? filterProps.filterObject[items] : '';
+                    search.push(
+                        <div className="py-2 px-5" key={`searchForm_${items}`}>
+                            <label className={inputStyle.label}>{items}</label>
+                            <input 
+                                type="text" 
+                                name={items} 
+                                className={inputStyle.text} 
+                                placeholder={`Search ${items}`}
+                                value={defaultValue}
+                                onChange={filterProps.inputEvent}
+                            />
+                        </div>
+                    );
+                }
             })
         }
         return search;
@@ -69,8 +73,9 @@ export default function TableFilterComponent({
                 </label>
             </div>
             <div className="float-right relative">
-                <button onClick={()=>setIsOpen(true)}>
-                    <i className="fa fa-gear"></i>
+                <button onClick={()=>setIsOpen(true)} className={buttonStyle.teal}>
+                    <i className="fa fa-magnifying-glass mr-2"></i>
+                    Filter
                 </button>
                 {isOpen ? (
                     <div className="absolute top-0 right-0 shadow-sm shadow-slate-500 bg-white rounded-sm min-w-80 z-[2]" ref={toggleFilter}>
@@ -78,7 +83,7 @@ export default function TableFilterComponent({
                         {buildSearchForm()}
                         <div className="py-2 px-3">
                             <div className="text-right">
-                                <button type="reset" className={buttonStyle.red} onClick={() => setIsOpen(false)}>Reset</button>
+                                <button type="reset" className={buttonStyle.red} onClick={filterProps.resetEvent}>Reset</button>
                                 <button type="button" className={buttonStyle.green} onClick={filterProps.filterEvent}>Search</button>
                             </div>
                         </div>

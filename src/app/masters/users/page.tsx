@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import CardsComponent from "../../components/cards/CardsComponent";
 import TableComponent from "../../components/cards/TableComponent";
 import { User } from "@prisma/client";
-import { buttonStyle } from "../../data/constants";
+import { buttonStyle, tableConfig } from "../../data/constants";
 
 const APIConf = {
     headers: {
@@ -13,6 +13,8 @@ const APIConf = {
 
 export default function MasterUsers(){
     const filterObj = {
+        page: '1',
+        limit: tableConfig.defaultLimit,
         address:'',
         email:'',
         name:'',
@@ -21,7 +23,7 @@ export default function MasterUsers(){
     const [filter, setFilter] = useState(filterObj);
     const [isSearch, setIsSearch] = useState(true);
 
-    const [userData, setUserData] = useState<Array<User>>([]);
+    const [userData, setUserData] = useState<APIdataResponse>();
 
     const cardList = [
         {title: 'card1 Title', counter:540},
@@ -30,7 +32,7 @@ export default function MasterUsers(){
         {title: 'card4 Title', counter:878},
     ];
 
-    const UserCall = async():Promise<Record<number, any>[]> => {
+    const UserCall = async():Promise<APIdataResponse> => {
         const response = await fetch('/api/users/lists?'+new URLSearchParams(filter),{
             headers: APIConf.headers,
             method: 'GET',
@@ -40,9 +42,8 @@ export default function MasterUsers(){
             console.log('ERROR ', e);
         });
         const data = response;
-        setUserData(response?.data);
-        
-        return data;
+        setUserData(data?.data);        
+        return data?.data;
     }
 
     useEffect(() => {
@@ -61,7 +62,8 @@ export default function MasterUsers(){
     }
 
     const resetSearch = () => {
-        setFilter(filterObj);
+        setFilter({...filter, ...filterObj});
+        setIsSearch(true);
     }
 
     const fieldFilter = () => {

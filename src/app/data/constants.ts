@@ -48,6 +48,10 @@ const mainMenus = [
     },
 ];
 
+const tableConfig = {
+    defaultLimit: '10',
+};
+
 const tableStyle = {
     table: 'w-full text-sm text-left text-gray-500 dark:text-gray-400 dataTable-table h-auto',
     header: 'text-xs text-gray-700 uppercase bg-gray-50 dark:bg-slate-700 dark:text-gray-400',
@@ -68,9 +72,11 @@ const inputStyle = {
     label: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize',
     text: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-400 focus:border-gray-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-400 dark:focus:border-gray-400 outline-none",
 }
+
 export{
     mainMenus,
     buttonStyle,
+    tableConfig,
     tableStyle,
     inputStyle,
 }

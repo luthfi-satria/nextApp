@@ -4,12 +4,20 @@ type ResponseBody = {
     data?: Record<any,any>
 }
 
+type APIdataResponse = {
+    page: number,
+    totalPage: number,
+    total: number,
+    totalFiltered: number,
+    results: Array<{[key:string]: any}>,
+}
+
 type tableProps = {
     props: {
         id?: string
     },
     head?: string[],
-    data?: Array<{[key:string]: any}>,
+    data?: APIdataResponse,
     columnToHide?: string[],
     hasAction?: boolean,
     filter: FilterProps,

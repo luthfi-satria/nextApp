@@ -52,7 +52,7 @@ export default function TableComponent({
         }
         return td;
     }
-
+    
     return (
         <div className="card h-full">
             <div className="card-header">
@@ -70,7 +70,7 @@ export default function TableComponent({
                                     <tr key={`thead`}>{fetchHead()}</tr>
                                 </thead>
                                 <tbody className={tableStyle.body}>
-                                    {tableProps?.data && tableProps.data.map((rows, rowIndex) => {
+                                    {tableProps?.data?.results && tableProps.data.results.map((rows, rowIndex) => {
                                         return <tr key={`row-${rowIndex}`} className={tableStyle.rowBody}>{fetchData(rows, rowIndex)}</tr>
                                     })}
                                 </tbody>
