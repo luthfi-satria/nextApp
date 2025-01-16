@@ -24,21 +24,17 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
-      <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></link>
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-          <PageHeader/>
-          <div className="mt-14 min-h-max">
-            <div className="mycontainer">
-              {children}
-            </div>
-          </div>
-          <PageFooter />
+        <PageHeader/>
+        <div>
+          {children}
+        </div>
+        <PageFooter />
       </body>
     </html>
   );

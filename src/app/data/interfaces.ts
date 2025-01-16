@@ -1,0 +1,25 @@
+type ResponseBody = {
+    code: number,
+    message: string,
+    data?: Record<any,any>
+}
+
+type tableProps = {
+    props: {
+        id?: string
+    },
+    head?: string[],
+    data?: Array<{[key:string]: any}>,
+    columnToHide?: string[],
+    hasAction?: boolean,
+    filter: FilterProps,
+}
+
+type FilterProps = {
+    enableFilter?: boolean
+    filterField?: Array<string>
+    filterObject?: {[key:string]:any} | undefined
+    inputEvent?: (data:{[key:string]:any}) => void
+    filterEvent?: (data:{[key:string]:any}) => void
+    resetEvent?: () => void
+}
