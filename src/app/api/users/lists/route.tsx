@@ -30,7 +30,9 @@ export async function GET(req: Request){
     
     console.log(`LIST users - params ${searchParams}`);
     const client = new PrismaClient;
-    const totalUser = await client.user.count();
+    const totalUser = await client.user.count({
+        where: params,
+    });
     const allUser = await client.user.findMany({
         where: params,
         skip: offset,
@@ -38,9 +40,10 @@ export async function GET(req: Request){
     });
     const apiDataResponse: APIdataResponse = {
         page: page,
+        limit: limit,
         total: totalUser,
         totalFiltered: allUser.length,
-        totalPage: (Math.ceil(allUser.length / limit)),
+        totalPage: (Math.ceil(totalUser / limit)),
         results: allUser,
     };
     const Output:ResponseBody = {

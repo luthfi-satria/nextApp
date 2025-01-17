@@ -6,6 +6,7 @@ type ResponseBody = {
 
 type APIdataResponse = {
     page: number,
+    limit: number,
     totalPage: number,
     total: number,
     totalFiltered: number,
@@ -17,7 +18,7 @@ type tableProps = {
         id?: string
     },
     head?: string[],
-    data?: APIdataResponse,
+    data?: APIdataResponse | {},
     columnToHide?: string[],
     hasAction?: boolean,
     filter: FilterProps,
@@ -29,5 +30,6 @@ type FilterProps = {
     filterObject?: {[key:string]:any} | undefined
     inputEvent?: (data:{[key:string]:any}) => void
     filterEvent?: (data:{[key:string]:any}) => void
-    resetEvent?: () => void
+    resetEvent?: () => void,
+    paginationEvent?: (page:number) => void,
 }

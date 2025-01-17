@@ -1,15 +1,19 @@
 import { tableStyle } from "../../data/constants";
 import TableFilterComponent from "./TableFilterComponent";
+import TablePagination from "./TablePagination";
 
 export default function TableComponent({
     title,
     tableProps,
+    data,
     generateAction,
 }:Readonly<{
     title: string, 
     tableProps: tableProps, 
+    data: APIdataResponse
     generateAction: (data:{[key:string]:any}, rowIndex:number) => void,
 }>){
+
     const fetchHead = () => {
         let head:string[] = [];
         if(tableProps.head && tableProps.head?.length > 0) {
@@ -70,13 +74,16 @@ export default function TableComponent({
                                     <tr key={`thead`}>{fetchHead()}</tr>
                                 </thead>
                                 <tbody className={tableStyle.body}>
-                                    {tableProps?.data?.results && tableProps.data.results.map((rows, rowIndex) => {
+                                    {data?.results && data.results.map((rows, rowIndex) => {
                                         return <tr key={`row-${rowIndex}`} className={tableStyle.rowBody}>{fetchData(rows, rowIndex)}</tr>
                                     })}
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                </div>
+                <div id="dataTable-pagination" className='block relative mb-5'>
+                    <TablePagination tableProps={tableProps} data={data}/>
                 </div>
             </div>
         </div>

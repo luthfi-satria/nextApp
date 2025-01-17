@@ -19,54 +19,21 @@ export default function MasterUsers(){
         name:'',
         phone:'',
     }
-    const [filter, setFilter] = useState(filterObj);
+    const [params, setParams] = useState(filterObj);
+
+    const ApiRes:APIdataResponse = {
+        limit: parseInt(params.limit),
+        page: parseInt(params.page),
+        totalPage:0,
+        total: 0,
+        totalFiltered: 0,
+        results: [],
+    }
+    const [apiResponse, setApiResponse] = useState<APIdataResponse>(ApiRes);
     const [isSearch, setIsSearch] = useState(true);
-
-    const [userData, setUserData] = useState<APIdataResponse>();
-
-    const cardList = [
-        {title: 'card1 Title', counter:540},
-        {title: 'card2 Title', counter:1000},
-        {title: 'card3 Title', counter:20},
-        {title: 'card4 Title', counter:878},
-    ];
-
-    const UserCall = async():Promise<APIdataResponse> => {
-        const response = await fetch('/api/users/lists?'+new URLSearchParams(filter),{
-            headers: APIConf.headers,
-            method: 'GET',
-        }).then((response) => {
-            return response.json();
-        }).catch((e) => {
-            console.log('ERROR ', e);
-        });
-        const data = response;
-        setUserData(data?.data);        
-        return data?.data;
-    }
-
-    useEffect(() => {
-        if(filter && isSearch){
-            UserCall();
-        }
-        setIsSearch(false);
-    }, [filter, isSearch]);
-
-    const searchChangeEvent = (e:any) => {
-        setFilter({...filter, [e.target.name]: e.target.value});
-        return e;
-    }
-    const searchEvent = (e:any) => {
-        setIsSearch(true);
-    }
-
-    const resetSearch = () => {
-        setFilter({...filter, ...filterObj});
-        setIsSearch(true);
-    }
-
+    
     const fieldFilter = () => {
-        let Obj = Object.keys(filter);
+        let Obj = Object.keys(params);
         Obj = Obj.filter((items) => items !== 'address');
         return Obj;
     }
@@ -75,17 +42,56 @@ export default function MasterUsers(){
         props: {
             id: 'table-user'
         },
-        data: userData,
         columnToHide:['image','address','id'],
         hasAction: true,
         filter: {
             enableFilter: true,
-            filterObject: filter,
+            filterObject: params,
             filterField: fieldFilter(),
-            inputEvent: searchChangeEvent,
-            filterEvent: searchEvent,
-            resetEvent: resetSearch,
+            inputEvent: (e:any) => {
+                setParams({...params, [e.target.name]: e.target.value});
+                return e;
+            },
+            filterEvent: () => {
+                setParams({...params, page: '1'});
+                setIsSearch(true);
+            },
+            resetEvent: () => {
+                setParams({...params, ...filterObj});
+                setIsSearch(true);
+            },
+            paginationEvent: (page:number) => {
+                setParams({...params, page: page.toString()});
+                setIsSearch(true);
+            },
         }
+    };
+
+    const cardList = [
+        {title: 'card1 Title', counter:540},
+        {title: 'card2 Title', counter:1000},
+        {title: 'card3 Title', counter:20},
+        {title: 'card4 Title', counter:878},
+    ];
+
+    useEffect(() => {
+        if(isSearch){
+            UserCall();
+        }
+        setIsSearch(false);
+    }, [isSearch]);
+
+    const UserCall = async() => {
+        const response = await fetch('/api/users/lists?'+new URLSearchParams(params),{
+            headers: APIConf.headers,
+            method: 'GET',
+        }).then((result) => {
+            return result.json();
+        }).catch((e) => {
+            console.log('ERROR ', e);
+        });
+        setApiResponse(response?.data);
+        return response?.data;
     }
 
     const generateAction = (data: any, rowIndex: number) => {
@@ -100,7 +106,12 @@ export default function MasterUsers(){
     return (
         <div id="main-container">
             <CardsComponent cardsData={cardList}/>
-            <TableComponent title="User Table" tableProps={table} generateAction={generateAction}/>
+            <TableComponent 
+                title="User Table" 
+                tableProps={table} 
+                data={apiResponse} 
+                generateAction={generateAction}
+            />
         </div>
     );
 }

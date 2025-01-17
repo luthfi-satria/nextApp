@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { buttonStyle, inputStyle } from "../../data/constants";
 
 export default function TableFilterComponent({
-    filterProps
+    filterProps,
 }: Readonly<{
     filterProps: FilterProps
 }>){
