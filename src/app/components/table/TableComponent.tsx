@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { tableStyle } from "../../data/constants";
 import TableFilterComponent from "./TableFilterComponent";
 import TablePagination from "./TablePagination";
@@ -62,30 +63,39 @@ export default function TableComponent({
             <div className="card-header">
                 <h4 className="card-title font-medium">{title}</h4>
             </div>
-            <div className="card-body p-4">
-                <div id="dataTable-filter" className="block relative mb-5">
-                    <TableFilterComponent filterProps={tableProps.filter}/>
-                </div>
-                <div className="relative sm:rounded">
-                    <div className="no-footer sortable searchable fixed-columns">
-                        <div className="">
-                            <table className={tableStyle.table} id={tableProps?.props?.id || 'main-table'}>
-                                <thead className={tableStyle.header}>
-                                    <tr key={`thead`}>{fetchHead()}</tr>
-                                </thead>
-                                <tbody className={tableStyle.body}>
-                                    {data?.results && data.results.map((rows, rowIndex) => {
-                                        return <tr key={`row-${rowIndex}`} className={tableStyle.rowBody}>{fetchData(rows, rowIndex)}</tr>
-                                    })}
-                                </tbody>
-                            </table>
-                        </div>
+            {tableProps?.isLoading ? (
+                <div className="card h-full">
+                    <div className="block relative p-10 font-bold text-center text-xl">
+                        <i className="fa fa-refresh fa-pulse fa-fw mr-4"></i>
+                        <span>Loading...</span>
                     </div>
                 </div>
-                <div id="dataTable-pagination" className='block relative mb-5'>
-                    <TablePagination tableProps={tableProps} data={data}/>
+            ) : (
+                <div className="card-body p-4">
+                    <div id="dataTable-filter" className="block relative mb-5">
+                        <TableFilterComponent filterProps={tableProps.filter}/>
+                    </div>
+                    <div className="relative sm:rounded">
+                        <div className="no-footer sortable searchable fixed-columns">
+                            <div className="">
+                                <table className={tableStyle.table} id={tableProps?.props?.id || 'main-table'}>
+                                    <thead className={tableStyle.header}>
+                                        <tr key={`thead`}>{fetchHead()}</tr>
+                                    </thead>
+                                    <tbody className={tableStyle.body}>
+                                        {data?.results && data.results.map((rows, rowIndex) => {
+                                            return <tr key={`row-${rowIndex}`} className={tableStyle.rowBody}>{fetchData(rows, rowIndex)}</tr>
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="dataTable-pagination" className='block relative mb-5'>
+                        <TablePagination tableProps={tableProps} data={data}/>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }

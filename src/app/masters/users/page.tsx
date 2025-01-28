@@ -20,6 +20,7 @@ export default function MasterUsers(){
         phone:'',
     }
     const [params, setParams] = useState(filterObj);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const cardList:Array<Cards> = [];
     const [cards, setCards] = useState<Array<Cards>>(cardList);
@@ -47,6 +48,7 @@ export default function MasterUsers(){
         },
         columnToHide:['image','address','id'],
         hasAction: true,
+        isLoading: isLoading,
         filter: {
             enableFilter: true,
             filterObject: params,
@@ -87,6 +89,7 @@ export default function MasterUsers(){
             console.log('ERROR ', e);
         });
         setApiResponse(response?.data);
+        setIsLoading(false);
         return response?.data;
     }
 

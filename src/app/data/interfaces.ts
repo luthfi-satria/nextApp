@@ -21,6 +21,7 @@ type tableProps = {
     data?: APIdataResponse | {},
     columnToHide?: string[],
     hasAction?: boolean,
+    isLoading?: boolean,
     filter: FilterProps,
 }
 
