@@ -1,8 +1,3 @@
-type Cards = {
-    title: String
-    counter: Number,
-};
-
 export default function CardsComponent({
     cardsData
 }:Readonly<{cardsData: Cards[]}>){

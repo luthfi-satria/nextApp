@@ -33,3 +33,8 @@ type FilterProps = {
     resetEvent?: () => void,
     paginationEvent?: (page:number) => void,
 }
+
+type Cards = {
+    title: String
+    counter: Number,
+};

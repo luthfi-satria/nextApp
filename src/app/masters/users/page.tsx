@@ -21,6 +21,9 @@ export default function MasterUsers(){
     }
     const [params, setParams] = useState(filterObj);
 
+    const cardList:Array<Cards> = [];
+    const [cards, setCards] = useState<Array<Cards>>(cardList);
+
     const ApiRes:APIdataResponse = {
         limit: parseInt(params.limit),
         page: parseInt(params.page),
@@ -67,13 +70,6 @@ export default function MasterUsers(){
         }
     };
 
-    const cardList = [
-        {title: 'card1 Title', counter:540},
-        {title: 'card2 Title', counter:1000},
-        {title: 'card3 Title', counter:20},
-        {title: 'card4 Title', counter:878},
-    ];
-
     useEffect(() => {
         if(isSearch){
             UserCall();
@@ -105,7 +101,7 @@ export default function MasterUsers(){
 
     return (
         <div id="main-container">
-            <CardsComponent cardsData={cardList}/>
+            <CardsComponent cardsData={cards}/>
             <TableComponent 
                 title="User Table" 
                 tableProps={table} 
