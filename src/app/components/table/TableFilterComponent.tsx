@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from "react";
-import { buttonStyle, inputStyle } from "../../data/constants";
+import { buttonStyle, inputStyle, tableConfig } from "../../data/constants";
 
 export default function TableFilterComponent({
     filterProps,
@@ -66,10 +66,15 @@ export default function TableFilterComponent({
         <div className="pt-2 px-3">
             <div className="float-left">
                 <label>
-                    <select className="dataTable-selector rounded-md mr-1 border-[1px] border-solid border-gray-200 p-[6px] outline-none focus:border-gray-400">
+                    <select 
+                    name="limit"
+                    className="dataTable-selector rounded-md mr-1 border-[1px] border-solid border-gray-200 p-[6px] outline-none focus:border-gray-400" 
+                    defaultValue={tableConfig.defaultLimit} 
+                    onChange={(e) => filterProps.inputEvent(e, true)}
+                    >
                         {buildDropDownOptions()}
                     </select>
-                    Entries per page
+                    Entries
                 </label>
             </div>
             <div className="float-right relative">

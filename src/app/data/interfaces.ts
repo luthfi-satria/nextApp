@@ -18,7 +18,7 @@ type tableProps = {
         id?: string
     },
     head?: string[],
-    data?: APIdataResponse | {},
+    data?: APIdataResponse,
     columnToHide?: string[],
     hasAction?: boolean,
     isLoading?: boolean,
@@ -29,7 +29,7 @@ type FilterProps = {
     enableFilter?: boolean
     filterField?: Array<string>
     filterObject?: {[key:string]:any} | undefined
-    inputEvent?: (data:{[key:string]:any}) => void
+    inputEvent?: (e:any, v:any) => void
     filterEvent?: (data:{[key:string]:any}) => void
     resetEvent?: () => void,
     paginationEvent?: (page:number) => void,

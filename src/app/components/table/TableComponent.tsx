@@ -19,11 +19,9 @@ export default function TableComponent({
         let head:string[] = [];
         if(tableProps.head && tableProps.head?.length > 0) {
             head = tableProps.head
-        }else if(tableProps.data && tableProps.data.length > 0){
-            head = Object.keys(tableProps.data[0]);
         }
 
-        if(tableProps.hasAction){
+        if(tableProps.hasAction && head.includes('action') == false){
             head.push('action');
         }
 
@@ -77,7 +75,7 @@ export default function TableComponent({
                     </div>
                     <div className="relative sm:rounded">
                         <div className="no-footer sortable searchable fixed-columns">
-                            <div className="">
+                            <div className="w-full overflow-hidden overflow-x-auto">
                                 <table className={tableStyle.table} id={tableProps?.props?.id || 'main-table'}>
                                     <thead className={tableStyle.header}>
                                         <tr key={`thead`}>{fetchHead()}</tr>
