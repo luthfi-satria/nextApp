@@ -1,3 +1,4 @@
+'use client'
 import { FormEvent, useContext, useState } from "react";
 import {InputComponent, SelectComponent} from "../../components/common/InputComponent";
 import { UserContext } from "./page";
@@ -22,8 +23,16 @@ export default function UserForm(){
 
     const submitForm = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await fetch('/api/users/add', {
-            method: 'POST',
+        let urlPath = 'add';
+        let method = 'POST';
+        if(Object.keys(addUser).includes('id')){
+            urlPath = `update/${addUser.id}`;
+            method = 'PUT';
+            delete addUser.id;
+        }
+
+        const response = await fetch(`/api/users/${urlPath}`, {
+            method: method,
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -52,11 +61,11 @@ export default function UserForm(){
             {showAlert.code != 200 ? (
                 <AlertElements title={showAlert?.title} message={showAlert.message} />
             ) : ''}
-            <InputComponent label="Email" name="email" value="" placeholder="Enter email" onChangeEvent={changeHandler} />
-            <InputComponent label="name" name="name" value="" placeholder="Enter username" onChangeEvent={changeHandler} />
-            <InputComponent label="Phone" name="phone" value="" placeholder="Enter phone number" onChangeEvent={changeHandler} />
-            <SelectComponent label="Gender" name="gender" value={"Male"} option={genderOption} onChangeEvent={changeHandler}/>
-            <InputComponent label="Address" name="address" value="" placeholder="Enter your address" onChangeEvent={changeHandler}/>
+            <InputComponent label="Email" name="email" value={addUser.email} placeholder="Enter email" onChangeEvent={changeHandler} />
+            <InputComponent label="name" name="name" value={addUser.name} placeholder="Enter username" onChangeEvent={changeHandler} />
+            <InputComponent label="Phone" name="phone" value={addUser.phone} placeholder="Enter phone number" onChangeEvent={changeHandler} />
+            <SelectComponent label="Gender" name="gender" value={addUser.gender} option={genderOption} onChangeEvent={changeHandler}/>
+            <InputComponent label="Address" name="address" value={addUser.address} placeholder="Enter your address" onChangeEvent={changeHandler}/>
         </form>
     );
 }

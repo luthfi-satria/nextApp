@@ -1,4 +1,3 @@
-import { FormEvent, MouseEvent } from "react";
 import { buttonStyle, tableConfig } from "../../data/constants"
 import { AddUser } from "../../data/schemas";
 import UserForm from "./userForm";
@@ -84,15 +83,6 @@ const initTable = (
     }
 };
 
-const generateAction = (data: any, rowIndex: number) => {
-    return (
-        <td className="px-6 py-3" key={`rowAction${rowIndex}`}>
-            <button type="button" className={`mr-1 ${buttonStyle.blue}`}>Update</button>
-            <button type="button" className={`mr-1 ${buttonStyle.red}`}>Remove</button>
-        </td>
-    );
-}
-
 const buildModalContent = () => {
     return <UserForm/>
 }
@@ -126,7 +116,6 @@ export{
     ApiRes,
     initTable,
     buttonStyle,
-    generateAction,
     buildModalContent,
     buildModalFooter,
     UserCall,

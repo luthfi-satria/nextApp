@@ -24,11 +24,44 @@ export default function MasterUsers(){
         setIsSearch(false);
     }, [isSearch]);
 
+    const generateAction = (data: any, rowIndex: number) => {
+        return (
+            <td className="px-6 py-3" key={`rowAction${rowIndex}`}>
+                <button type="button" className={`mr-1 ${buttonStyle.blue}`} onClick={() => editUser(data)}>Update</button>
+                <button type="button" className={`mr-1 ${buttonStyle.red}`} onClick={() => deleteUser(data.id)}>Remove</button>
+            </td>
+        );
+    }
+
+    const newUser = () => {
+        setAddUser(addUserConst);
+        setmodalShow(!modalShow);
+    }
+
+    const editUser = (data:any) => {
+        setAddUser({...addUser, ...data});
+        setmodalShow(true);
+        return data;
+    }
+
+    const deleteUser = async(id:number) => {
+        const response = await fetch(`/api/users/delete/${id}`,
+        {
+            method: 'DELETE',
+        }).then((results) => {
+            return results.json();
+        });
+
+        if(response.code == 200){
+            setIsSearch(true);
+        }
+        console.log('DELETE', response);
+    }
     return (
         <div id="main-container">
             <div className="w-full">
                 <div className="text-right mr-6">
-                    <button className={buttonStyle.green} onClick={() => setmodalShow(!modalShow)}>ADD USER</button>
+                    <button className={buttonStyle.green} onClick={newUser}>ADD USER</button>
                 </div>
             </div>
             <CardsComponent cardsData={cards}/>
