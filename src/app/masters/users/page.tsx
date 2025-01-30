@@ -1,11 +1,13 @@
 'use client'
 
-import { useEffect, useState } from "react";
-import { ApiRes, UserCall, buildModalContent, buildModalFooter, buttonStyle, filterObj, generateAction, initTable } from "./userState";
+import { createContext, useEffect, useState } from "react";
+import { ApiRes, UserCall, addUserConst, buildModalContent, buildModalFooter, buttonStyle, filterObj, generateAction, initTable } from "./userState";
 import CardsComponent from "../../components/cards/CardsComponent";
 import TableComponent from "../../components/table/TableComponent";
 import ModalComponent from "../../components/modal/ModalComponent";
+import { AddUser } from "../../data/schemas";
 
+export const UserContext = createContext<any>([]);
 export default function MasterUsers(){
     const [params, setParams] = useState(filterObj);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -13,6 +15,8 @@ export default function MasterUsers(){
     const [cards, setCards] = useState<Array<Cards>>([]);
     const [apiResponse, setApiResponse] = useState<APIdataResponse>(ApiRes);
     const [isSearch, setIsSearch] = useState(true);
+    const [addUser, setAddUser] = useState<AddUser>(addUserConst);
+    
     useEffect(() => {
         if(isSearch){
             UserCall(params, setApiResponse, setIsLoading);
@@ -35,10 +39,14 @@ export default function MasterUsers(){
                 generateAction={generateAction}
             />
             {modalShow ? (
-                <ModalComponent 
-                    modalContent={buildModalContent()} 
-                    modalFooter={buildModalFooter(() => setmodalShow(false))}
-                />
+                <UserContext.Provider value={[addUser, setAddUser, setIsSearch, setmodalShow]}>
+                    <ModalComponent 
+                        modalContent={buildModalContent()} 
+                        modalFooter={buildModalFooter(
+                            () => setmodalShow(false)
+                        )}
+                    />
+                </UserContext.Provider>
             ): ""}
         </div>
     );

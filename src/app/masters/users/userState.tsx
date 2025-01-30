@@ -1,4 +1,6 @@
+import { FormEvent, MouseEvent } from "react";
 import { buttonStyle, tableConfig } from "../../data/constants"
+import { AddUser } from "../../data/schemas";
 import UserForm from "./userForm";
 
 const APIConf = {
@@ -14,6 +16,14 @@ const filterObj = {
     email:'',
     name:'',
     phone:'',
+}
+
+const addUserConst:AddUser = {
+    email: '',
+    name: '',
+    address: '',
+    gender: 'Male',
+    phone: '',
 }
 
 const cardList:Array<Cards> = [];
@@ -87,18 +97,13 @@ const buildModalContent = () => {
     return <UserForm/>
 }
 
-const buildModalFooter = (closeModal: () => void) => {
+const buildModalFooter = (closeModal:any) => {
     return (
         <>
-            <button className={buttonStyle.teal}>Submit</button>
+            <button type="submit" form="formUser" className={buttonStyle.teal}>Submit</button>
             <button className={buttonStyle.red} onClick={closeModal}>Close</button>
         </>
     );
-}
-
-const showModal = (cmd:string):any => {
-    console.log('click', cmd);
-    return cmd;
 }
 
 const UserCall = async(params:any,setApiResponse:any,setIsLoading:any) => {
@@ -116,6 +121,7 @@ const UserCall = async(params:any,setApiResponse:any,setIsLoading:any) => {
 }
 
 export{
+    addUserConst,
     filterObj,
     ApiRes,
     initTable,
@@ -123,6 +129,5 @@ export{
     generateAction,
     buildModalContent,
     buildModalFooter,
-    showModal,
     UserCall,
 }
