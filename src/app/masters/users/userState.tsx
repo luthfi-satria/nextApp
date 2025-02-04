@@ -110,6 +110,23 @@ const UserCall = async(params:any,setApiResponse:any,setIsLoading:any) => {
     return response?.data;
 }
 
+const exportJson = async(ApiResponse:any) => {
+    try{
+        if(ApiResponse && ApiResponse?.results){
+            const workbook = new Blob([JSON.stringify(ApiResponse?.results)], {type: 'application/json'});
+            const csvUrl = URL.createObjectURL(workbook);
+            const link = document.createElement('a');
+            link.href = csvUrl;
+            link.download = `user_data.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }catch(error:any){
+        console.log('#======= Export Failed ========#', error.message);
+        return false;
+    }
+}
 export{
     addUserConst,
     filterObj,
@@ -119,4 +136,5 @@ export{
     buildModalContent,
     buildModalFooter,
     UserCall,
+    exportJson,
 }

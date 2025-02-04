@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useEffect, useState } from "react";
-import { ApiRes, UserCall, addUserConst, buildModalContent, buildModalFooter, buttonStyle, filterObj, generateAction, initTable } from "./userState";
+import { ApiRes, UserCall, addUserConst, buildModalContent, buildModalFooter, buttonStyle, exportJson, filterObj, initTable } from "./userState";
 import CardsComponent from "../../components/cards/CardsComponent";
 import TableComponent from "../../components/table/TableComponent";
 import ModalComponent from "../../components/modal/ModalComponent";
@@ -62,6 +62,7 @@ export default function MasterUsers(){
             <div className="w-full">
                 <div className="text-right mr-6">
                     <button className={buttonStyle.green} onClick={newUser}>ADD USER</button>
+                    <button className={buttonStyle.cyan} onClick={() => exportJson(apiResponse)}><i className="fa fa-download"></i></button>
                 </div>
             </div>
             <CardsComponent cardsData={cards}/>
