@@ -127,6 +127,42 @@ const exportJson = async(ApiResponse:any) => {
         return false;
     }
 }
+
+const convertCSV = (data: any) => {
+    let str = '';
+
+    for(const items of data){
+        let line = '';
+        for(const obj in items){
+            if(line !== '') line += ',';
+            line += items[obj];
+        }
+        str += line + '\r\n';
+    }
+
+    return str;
+}
+
+const exportCsv = async(ApiResponse:any) => {
+    try{
+        if(ApiResponse && ApiResponse?.results){
+            const obj = convertCSV(ApiResponse?.results);
+            const workbook = new Blob([obj], {type: 'text/csv'});
+            const csvUrl = URL.createObjectURL(workbook);
+            const link = document.createElement('a');
+            link.href = csvUrl;
+            link.download = `user_data.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+    }catch(error:any){
+        console.log('#======= Export CSV failed ========#', error.message);
+        return false;
+    }
+}
+
 export{
     addUserConst,
     filterObj,
@@ -137,4 +173,5 @@ export{
     buildModalFooter,
     UserCall,
     exportJson,
+    exportCsv,
 }

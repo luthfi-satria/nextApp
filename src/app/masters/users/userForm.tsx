@@ -10,7 +10,7 @@ export default function UserForm(){
         {label: 'Female', value: 'Female'},
     ];
     
-    const [addUser, setAddUser, setIsSearch, setmodalShow] = useContext(UserContext);
+    const [ApiUser, addUser, setAddUser, setIsSearch, setmodalShow] = useContext(UserContext);
     const [showAlert, setShowAlert] = useState({
         code: 200,
         title: '',
@@ -23,15 +23,15 @@ export default function UserForm(){
 
     const submitForm = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        let urlPath = 'add';
+        let urlPath = ApiUser.insert;
         let method = 'POST';
         if(Object.keys(addUser).includes('id')){
-            urlPath = `update/${addUser.id}`;
+            urlPath = `${ApiUser.update}/${addUser.id}`;
             method = 'PUT';
             delete addUser.id;
         }
 
-        const response = await fetch(`/api/users/${urlPath}`, {
+        const response = await fetch(urlPath, {
             method: method,
             headers: {
                 'Content-Type': 'application/json',

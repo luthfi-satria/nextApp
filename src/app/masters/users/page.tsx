@@ -1,11 +1,12 @@
 'use client'
 
 import { createContext, useEffect, useState } from "react";
-import { ApiRes, UserCall, addUserConst, buildModalContent, buildModalFooter, buttonStyle, exportJson, filterObj, initTable } from "./userState";
+import { ApiRes, ImportUser, UserCall, addUserConst, buildModalContent, buildModalFooter, buttonStyle, exportCsv, exportJson, filterObj, initTable } from "./userState";
 import CardsComponent from "../../components/cards/CardsComponent";
 import TableComponent from "../../components/table/TableComponent";
 import ModalComponent from "../../components/modal/ModalComponent";
 import { AddUser } from "../../data/schemas";
+import { ApiUser } from "../../data/apiPaths";
 
 export const UserContext = createContext<any>([]);
 export default function MasterUsers(){
@@ -57,12 +58,40 @@ export default function MasterUsers(){
         }
         console.log('DELETE', response);
     }
+    
+    const ImportUser = async() => {
+        const fileInput = (document.getElementById('importuser') as HTMLInputElement);
+        if(fileInput && fileInput.files){
+            const file = fileInput?.files[0];
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await fetch(ApiUser.import,
+            {
+                method: 'POST',
+                body: formData,
+            }).then((results) => {
+                return results.json();
+            });
+    
+            if(response.code == 200){
+                setIsSearch(true);
+            }
+            console.log('POST', response);        
+        }
+    }
     return (
         <div id="main-container">
             <div className="w-full">
                 <div className="text-right mr-6">
+                    <label className={buttonStyle.white} onChange={ImportUser}>
+                        Import
+                        <input id="importuser" type="file" className="hidden" name="importuser"/>
+                    </label>
                     <button className={buttonStyle.green} onClick={newUser}>ADD USER</button>
-                    <button className={buttonStyle.cyan} onClick={() => exportJson(apiResponse)}><i className="fa fa-download"></i></button>
+                    <button className={buttonStyle.cyan} onClick={() => exportJson(apiResponse)}><i className="fa fa-download"></i> JSON</button>
+                    <button className={buttonStyle.cyan} onClick={() => exportCsv(apiResponse)}><i className="fa fa-download"></i> CSV</button>
                 </div>
             </div>
             <CardsComponent cardsData={cards}/>
@@ -73,7 +102,7 @@ export default function MasterUsers(){
                 generateAction={generateAction}
             />
             {modalShow ? (
-                <UserContext.Provider value={[addUser, setAddUser, setIsSearch, setmodalShow]}>
+                <UserContext.Provider value={[ApiUser, addUser, setAddUser, setIsSearch, setmodalShow]}>
                     <ModalComponent 
                         modalContent={buildModalContent()} 
                         modalFooter={buildModalFooter(

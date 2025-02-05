@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ACCEPTED_FILE_TYPES, SERVERCONF } from "./constants";
 
 export const AddUserSchema = z.object({
     name: z.string(),
@@ -18,3 +19,12 @@ export const EditUserSchema = z.object({
 });
 
 export type EditUser = z.infer<typeof EditUserSchema>;
+
+export const ImportUserSchema = z.instanceof(File)
+.optional()
+.refine((file) => {
+    return !file || file.size <= SERVERCONF.MAX_UPLOAD_SIZE;
+}, `File must be less than ${SERVERCONF.MAX_UPLOAD_SIZE}`)
+.refine((file) => {
+    return ACCEPTED_FILE_TYPES.users.includes(file.type)
+}, `File must be ${ACCEPTED_FILE_TYPES.users.join(' or ')}`);

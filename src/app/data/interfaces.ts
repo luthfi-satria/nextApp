@@ -39,3 +39,11 @@ type Cards = {
     title: String
     counter: Number,
 };
+
+type ApiPath = {
+    get: string | '',
+    insert: string | '',
+    update: string | '',
+    delete: string | '',
+    import: string | '',
+}

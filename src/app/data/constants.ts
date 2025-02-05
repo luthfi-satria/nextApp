@@ -47,10 +47,18 @@ const mainMenus = [
         ],
     },
 ];
+const SERVERCONF = {
+    UPLOAD_PATH: "public/assets/",
+    MAX_UPLOAD_SIZE: 1024 * 1024 * 3 // 3MB
+}
 
 const tableConfig = {
     defaultLimit: '10',
 };
+
+const ACCEPTED_FILE_TYPES = {
+    users: ['text/csv'],
+}
 
 const tableStyle = {
     table: 'w-full text-sm text-left text-gray-500 dark:text-gray-400 dataTable-table h-auto',
@@ -61,7 +69,7 @@ const tableStyle = {
 }
 const defaultButtonStyle = "focus:ring-4 focus:outline-none font-medium rounded text-sm px-3 py-1 text-center mr-2 mb-2";
 const buttonStyle = {
-    white: `text-gray hover:bg-gray-200 ${defaultButtonStyle}`,
+    white: `text-gray hover:bg-gray-200 ring-2 ${defaultButtonStyle}`,
     gray: `text-gray bg-gradient-to-r from-gray-200 via-gray-500 to-gray-600 hover:bg-gradient-to-br focus:ring-gray-300 dark:focus:ring-gray-800 ${defaultButtonStyle}`,
     blue: `text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-blue-300 dark:focus:ring-blue-800 ${defaultButtonStyle}`,
     green: `text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-green-300 dark:focus:ring-green-800 ${defaultButtonStyle}`,
@@ -82,6 +90,8 @@ const paginationStyle = {
 }
 
 export{
+    SERVERCONF,
+    ACCEPTED_FILE_TYPES,
     mainMenus,
     buttonStyle,
     tableConfig,
