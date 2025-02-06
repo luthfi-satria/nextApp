@@ -1,8 +1,5 @@
-import * as fs from 'fs';
 import { ImportUserSchema } from "../../../data/schemas";
 import { ErrorMessage } from "../../../library/prismaErrorHandler";
-import path from "path";
-import { SERVERCONF } from "../../../data/constants";
 import { FileUploader } from '../../../library/fileUploader';
 import { PrismaClient } from '@prisma/client';
 
@@ -49,29 +46,31 @@ export async function POST(req:Request){
             });
 
             if(readFile){
-                const userLists = readFile.toString().split("\r\n");
+                const userLists = readFile.toString().split("\n");
                 userLists.shift();
 
-                console.log("UserLists", userLists);
                 if(userLists){
                     const result = [];
                     for(const items of userLists){
                         if(items != ''){
                             const obj = items.split(',');
                             result.push({
-                                email: obj[1],
-                                name: obj[2],
-                                address: obj[3],
+                                email: obj[0],
+                                name: obj[1],
+                                address: obj[2],
+                                gender: ["Male","Female"].includes(obj[3]) ? obj[3] : 'Male',
                                 phone: obj[4],
-                                image: obj[5],
-                                gender: obj[6],
                             });
                         }
                     }
 
                     const client = new PrismaClient;
-                    console.log("Insert bulk user", result);
-                    const insert = await client.user.createMany({data: result});
+                    const insert = await client.user.createMany({
+                        data: result,
+                        skipDuplicates: true,
+                    });
+                    Output.data = insert;
+                    uploader.DeleteFile();
                 }
             }
 

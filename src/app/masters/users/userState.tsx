@@ -1,6 +1,7 @@
 import { buttonStyle, tableConfig } from "../../data/constants"
 import { AddUser } from "../../data/schemas";
 import UserForm from "./userForm";
+import * as XLSX from "xlsx";
 
 const APIConf = {
     headers: {
@@ -163,6 +164,14 @@ const exportCsv = async(ApiResponse:any) => {
     }
 }
 
+const downloadCsvTemplate = async() => {
+    const header = [addUserConst];
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils?.json_to_sheet(header);
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'user data');
+    XLSX.writeFile(workbook, `user_template.xlsx`);
+}
+
 export{
     addUserConst,
     filterObj,
@@ -174,4 +183,5 @@ export{
     UserCall,
     exportJson,
     exportCsv,
+    downloadCsvTemplate,
 }

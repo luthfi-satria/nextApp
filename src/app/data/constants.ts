@@ -67,7 +67,7 @@ const tableStyle = {
     body: 'min-h-[200px]',
     rowBody: 'bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-slate-700/50',
 }
-const defaultButtonStyle = "focus:ring-4 focus:outline-none font-medium rounded text-sm px-3 py-1 text-center mr-2 mb-2";
+const defaultButtonStyle = "focus:ring-4 focus:outline-none font-medium rounded text-sm px-3 py-1 text-center mr-2 mb-2 cursor-pointer";
 const buttonStyle = {
     white: `text-gray hover:bg-gray-200 ring-2 ${defaultButtonStyle}`,
     gray: `text-gray bg-gradient-to-r from-gray-200 via-gray-500 to-gray-600 hover:bg-gradient-to-br focus:ring-gray-300 dark:focus:ring-gray-800 ${defaultButtonStyle}`,
@@ -89,6 +89,12 @@ const paginationStyle = {
     notAllowedButton: `${buttonStyle.white} opacity-50 cursor-not-allowed`,
 }
 
+const listStyle = {
+    ul: "py-2 text-sm text-gray-700 dark:text-gray-200",
+    li: "",
+    a: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+}
+
 export{
     SERVERCONF,
     ACCEPTED_FILE_TYPES,
@@ -98,4 +104,5 @@ export{
     tableStyle,
     inputStyle,
     paginationStyle,
+    listStyle,
 }

@@ -67,32 +67,14 @@ export class FileUploader {
             return resolve(data);
         });
     });
-    /*
-    ReadFile = (filePath?:string) => {
-        try{
-            return new Promise((resolve, reject) => {
-                const file = filePath ?? this.config.dirPath + this.config.fileName;
-                console.log('# ========= READ FILE =======', file);
-                fs.readFile(file, 'utf-8', (err, data) => {
-                    if(err){
-                        if(err.code == 'ENOENT'){
-                            console.error("File is not found:", err.path);
-                        }else{
-                            console.error('There something error occur when reading file', err);
-                        }
-                        return reject(err);
-                    }
-                    
-                    this.results = data;
-                    return resolve(this.results);
-                });
-            }) 
-        }catch(err:any){
-            console.log('# ========= READ FILE ERROR =======', err);
-            return false;
+
+    DeleteFile = () => {
+        const file = this.config.dirPath + this.config.fileName;
+        const fileExists = fs.existsSync(file);
+        if(fileExists){
+            fs.unlinkSync(file);
         }
     }
-    */
 
     UploadFile = () => {
         this.DirChecking();

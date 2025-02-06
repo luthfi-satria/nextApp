@@ -1,12 +1,13 @@
 'use client'
 
 import { createContext, useEffect, useState } from "react";
-import { ApiRes, ImportUser, UserCall, addUserConst, buildModalContent, buildModalFooter, buttonStyle, exportCsv, exportJson, filterObj, initTable } from "./userState";
+import { ApiRes, UserCall, addUserConst, buildModalContent, buildModalFooter, buttonStyle, downloadCsvTemplate, exportCsv, exportJson, filterObj, initTable } from "./userState";
 import CardsComponent from "../../components/cards/CardsComponent";
 import TableComponent from "../../components/table/TableComponent";
 import ModalComponent from "../../components/modal/ModalComponent";
 import { AddUser } from "../../data/schemas";
 import { ApiUser } from "../../data/apiPaths";
+import { listStyle } from "../../data/constants";
 
 export const UserContext = createContext<any>([]);
 export default function MasterUsers(){
@@ -17,6 +18,7 @@ export default function MasterUsers(){
     const [apiResponse, setApiResponse] = useState<APIdataResponse>(ApiRes);
     const [isSearch, setIsSearch] = useState(true);
     const [addUser, setAddUser] = useState<AddUser>(addUserConst);
+    const [importBtn, setImportBtn] = useState<boolean>(false);
     
     useEffect(() => {
         if(isSearch){
@@ -76,22 +78,43 @@ export default function MasterUsers(){
             });
     
             if(response.code == 200){
+                setIsLoading(true);
                 setIsSearch(true);
             }
-            console.log('POST', response);        
         }
     }
     return (
         <div id="main-container">
             <div className="w-full">
                 <div className="text-right mr-6">
-                    <label className={buttonStyle.white} onChange={ImportUser}>
-                        Import
-                        <input id="importuser" type="file" className="hidden" name="importuser"/>
-                    </label>
                     <button className={buttonStyle.green} onClick={newUser}>ADD USER</button>
                     <button className={buttonStyle.cyan} onClick={() => exportJson(apiResponse)}><i className="fa fa-download"></i> JSON</button>
                     <button className={buttonStyle.cyan} onClick={() => exportCsv(apiResponse)}><i className="fa fa-download"></i> CSV</button>
+                    <div className="relative inline-block">
+                        <button className={buttonStyle.white} data-dropdown-toggle="dropdown" onClick={() => setImportBtn(!importBtn)}>
+                            <span className="inline-block">Import</span>
+                            <i className="fa fa-gear ml-4"></i>
+                        </button>
+                        {importBtn ? (
+                            <div id="dropdown" className="absolute top-8 right-1 z-10 border border-slate-400 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
+                                <ul className="py-2 text-sm text-left text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                    <li>
+                                        <a href="#" className={listStyle.a} onClick={downloadCsvTemplate}>
+                                            <i className="fa fa-download mr-1"></i>
+                                            Download Template
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <label className={listStyle.a} onChange={ImportUser}>
+                                            <i className="fa fa-upload mr-1"></i>
+                                            Import CSV File
+                                            <input id="importuser" type="file" className="hidden" name="importuser"/>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        ) : ''}
+                    </div>
                 </div>
             </div>
             <CardsComponent cardsData={cards}/>
